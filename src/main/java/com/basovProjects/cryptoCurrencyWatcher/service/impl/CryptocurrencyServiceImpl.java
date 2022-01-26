@@ -22,31 +22,11 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService<Cryptocu
     }
 
     @Override
-    public boolean save(Cryptocurrency cryptocurrency) throws ObjectNotFoundException {
-        if(findById(cryptocurrency.getId())==null){
-            return false;
-        }
-        cryptocurrencyRepository.save(cryptocurrency);
-        return true;
-    }
-
-    @Override
     @Transactional
     public boolean update(Cryptocurrency cryptocurrency) throws ObjectNotFoundException {
         Cryptocurrency foundCryptocurrency = cryptocurrencyRepository.getById(cryptocurrency.getId());
-        if(foundCryptocurrency==null){
-            save(cryptocurrency);
-        }
-        foundCryptocurrency.setId(cryptocurrency.getId());
+        foundCryptocurrency.setPrice(cryptocurrency.getPrice());
         foundCryptocurrency.setSymbol(cryptocurrency.getSymbol());
-        foundCryptocurrency.setSymbol(cryptocurrency.getSymbol());
-        return true;
-    }
-
-
-    @Override
-    public boolean delete(Long id) throws ObjectNotFoundException {
-        cryptocurrencyRepository.delete(findById(id));
         return true;
     }
 
@@ -60,6 +40,16 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService<Cryptocu
             throw new ObjectNotFoundException("Not found the cryptocurrency with id=" + id);
         }
         return cryptocurrency;
+    }
+
+    @Override
+    public Cryptocurrency findBySymbol(String symbol) throws ObjectNotFoundException {
+        Cryptocurrency cryptocurrency = cryptocurrencyRepository.findBySymbol(symbol);
+        if(cryptocurrency!=null){
+            return cryptocurrency;
+        }else {
+            throw new ObjectNotFoundException(String.format("Symbol with name %s not found", symbol));
+        }
     }
 
     @Override

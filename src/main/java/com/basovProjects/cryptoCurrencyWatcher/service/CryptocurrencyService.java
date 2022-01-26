@@ -5,9 +5,8 @@ import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectNotFoundExceptio
 import java.util.List;
 
 public interface CryptocurrencyService<E,I> {
-    boolean save(E e) throws ObjectNotFoundException;
     boolean update(E e) throws ObjectNotFoundException;
-    boolean delete(I id) throws ObjectNotFoundException;
     E findById(I id) throws ObjectNotFoundException;
+    E findBySymbol(String symbol) throws ObjectNotFoundException;
     List<E> findAll();
 }

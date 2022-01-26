@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class CryptoHandler {
@@ -26,8 +27,11 @@ public class CryptoHandler {
                     try {
                         JSONObject json = JsonParser.readJsonFromUrl(
                                 String.format("https://api.coinlore.net/api/ticker/?id=%d", i.getId()));
-                        i.setPrice(Double.parseDouble(json.get("price_usd").toString()));
-                        cryptocurrencyService.update(i);
+                        Cryptocurrency cryptocurrencyNew = new Cryptocurrency();
+                        cryptocurrencyNew.setId(i.getId());
+                        cryptocurrencyNew.setSymbol(json.get("symbol").toString());
+                        cryptocurrencyNew.setPrice(Double.parseDouble(json.get("price_usd").toString()));
+                        cryptocurrencyService.update(cryptocurrencyNew);
 
                     } catch (IOException | ObjectNotFoundException e) {
                         e.printStackTrace();
