@@ -26,7 +26,7 @@ public class CryptoHandler {
                     try {
                         JSONObject json = JsonParser.readJsonFromUrl(
                                 String.format("https://api.coinlore.net/api/ticker/?id=%d", i.getId()));
-                        i.setCost(Double.parseDouble(json.get("price_usd").toString()));
+                        i.setPrice(Double.parseDouble(json.get("price_usd").toString()));
                         cryptocurrencyService.update(i);
 
                     } catch (IOException | ObjectNotFoundException e) {

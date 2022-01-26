@@ -38,8 +38,8 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService<Cryptocu
             save(cryptocurrency);
         }
         foundCryptocurrency.setId(cryptocurrency.getId());
-        foundCryptocurrency.setName(cryptocurrency.getName());
-        foundCryptocurrency.setCost(cryptocurrency.getCost());
+        foundCryptocurrency.setSymbol(cryptocurrency.getSymbol());
+        foundCryptocurrency.setSymbol(cryptocurrency.getSymbol());
         return true;
     }
 

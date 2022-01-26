@@ -13,6 +13,7 @@ public class Cryptocurrency {
     private String symbol;
     private Double price;
 
+
     public Cryptocurrency() {
     }
 
