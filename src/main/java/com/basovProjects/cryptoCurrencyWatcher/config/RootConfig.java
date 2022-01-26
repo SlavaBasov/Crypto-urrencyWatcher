@@ -37,7 +37,7 @@ public class RootConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
                 new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setPackagesToScan("com.basovProjects.wokBar.model");
+        entityManagerFactoryBean.setPackagesToScan("com.basovProjects.cryptoCurrencyWatcher.model");
         entityManagerFactoryBean.setDataSource(dataSource());
 
         JpaVendorAdapter vendorAdapter =
