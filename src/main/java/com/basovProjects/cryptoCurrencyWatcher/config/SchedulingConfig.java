@@ -21,8 +21,9 @@ public class SchedulingConfig {
     }
 
     @Async
-    @Scheduled(fixedDelay=5000)
+    @Scheduled(fixedDelay=60*1000)
     public void doSomething() {
         cryptoHandler.updatePricesDB();
+        cryptoHandler.priceChangeChecker();
     }
 }

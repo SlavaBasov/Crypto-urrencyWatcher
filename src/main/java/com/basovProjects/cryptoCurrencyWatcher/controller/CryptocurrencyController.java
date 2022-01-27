@@ -1,6 +1,5 @@
 package com.basovProjects.cryptoCurrencyWatcher.controller;
 
-import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectAlreadyExistException;
 import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectNotFoundException;
 import com.basovProjects.cryptoCurrencyWatcher.model.Cryptocurrency;
 import com.basovProjects.cryptoCurrencyWatcher.model.Order;
@@ -37,7 +36,7 @@ public class CryptocurrencyController {
     }
 
     @GetMapping("/currencies/notify")
-    public ResponseEntity<?> notifyUser(@RequestParam String username, @RequestParam String symbol) throws ObjectNotFoundException, ObjectAlreadyExistException {
+    public ResponseEntity<?> notifyUser(@RequestParam String username, @RequestParam String symbol) throws ObjectNotFoundException {
         Cryptocurrency cryptocurrencyFound = cryptocurrencyService.findBySymbol(symbol);
         boolean result = orderService.save(new Order(cryptocurrencyFound.getPrice(),
                 username, cryptocurrencyFound));
