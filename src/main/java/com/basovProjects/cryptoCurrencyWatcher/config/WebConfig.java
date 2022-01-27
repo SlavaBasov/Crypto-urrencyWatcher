@@ -8,16 +8,4 @@ import org.springframework.web.servlet.config.annotation.*;
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.basovProjects.cryptoCurrencyWatcher"})
 public class WebConfig implements WebMvcConfigurer {
-//
-//    @Override
-//    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(1);
-//    }
-//
-//    @Override
-//    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-//        configurer.enable();
-//    }
-
-
 }

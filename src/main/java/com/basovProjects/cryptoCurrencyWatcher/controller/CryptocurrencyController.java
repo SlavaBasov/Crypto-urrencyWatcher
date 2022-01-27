@@ -1,5 +1,6 @@
 package com.basovProjects.cryptoCurrencyWatcher.controller;
 
+import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectAlreadyExistException;
 import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectNotFoundException;
 import com.basovProjects.cryptoCurrencyWatcher.model.Cryptocurrency;
 import com.basovProjects.cryptoCurrencyWatcher.model.Order;
@@ -24,7 +25,7 @@ public class CryptocurrencyController {
     }
 
     @GetMapping("/currencies")
-    public ResponseEntity<List<Cryptocurrency>> getAllCryptocurrencies() throws ObjectNotFoundException {
+    public ResponseEntity<List<Cryptocurrency>> getAllCryptocurrencies() {
         List<Cryptocurrency> cryptocurrencyListFound = cryptocurrencyService.findAll();
         return ResponseEntity.ok().body(cryptocurrencyListFound);
     }
@@ -36,14 +37,14 @@ public class CryptocurrencyController {
     }
 
     @GetMapping("/currencies/notify")
-    public ResponseEntity<?> notifyUser(@RequestParam String username, @RequestParam String symbol) throws ObjectNotFoundException {
+    public ResponseEntity<?> notifyUser(@RequestParam String username, @RequestParam String symbol) throws ObjectNotFoundException, ObjectAlreadyExistException {
         Cryptocurrency cryptocurrencyFound = cryptocurrencyService.findBySymbol(symbol);
         boolean result = orderService.save(new Order(cryptocurrencyFound.getPrice(),
                 username, cryptocurrencyFound));
         if(result){
             return ResponseEntity.ok().body(String.format("Your order is accepted, %s", username));
         }
-        return ResponseEntity.ok().body(String.format("Your order already exists, %s", username));
+        return ResponseEntity.ok().body(String.format("Your order is updated, %s", username));
     }
 
 }

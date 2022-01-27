@@ -1,12 +1,16 @@
 package com.basovProjects.cryptoCurrencyWatcher.service.impl;
 
+import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectAlreadyExistException;
 import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectNotFoundException;
+import com.basovProjects.cryptoCurrencyWatcher.model.Cryptocurrency;
 import com.basovProjects.cryptoCurrencyWatcher.model.Order;
 import com.basovProjects.cryptoCurrencyWatcher.repository.OrderRepository;
 import com.basovProjects.cryptoCurrencyWatcher.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Table;
 import java.util.Optional;
 
 @Service
@@ -20,10 +24,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public boolean save(Order order) {
         Order foundOrder = orderRepository.findByUsernameAndCryptocurrency_Id(order.getUsername(),
                 order.getCryptocurrency().getId());
         if(foundOrder!=null){
+            foundOrder.setSavedPrice(order.getSavedPrice());
             return false;
         }
         orderRepository.save(order);

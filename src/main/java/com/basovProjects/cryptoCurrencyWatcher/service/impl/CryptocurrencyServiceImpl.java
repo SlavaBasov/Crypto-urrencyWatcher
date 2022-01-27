@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class CryptocurrencyServiceImpl implements CryptocurrencyService<Cryptocurrency, Long> {
 
-    private CryptocurrencyRepository cryptocurrencyRepository;
+    private final CryptocurrencyRepository cryptocurrencyRepository;
 
     @Autowired
     public CryptocurrencyServiceImpl(CryptocurrencyRepository cryptocurrencyRepository) {
@@ -23,7 +23,7 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService<Cryptocu
 
     @Override
     @Transactional
-    public boolean update(Cryptocurrency cryptocurrency) throws ObjectNotFoundException {
+    public boolean update(Cryptocurrency cryptocurrency) {
         Cryptocurrency foundCryptocurrency = cryptocurrencyRepository.getById(cryptocurrency.getId());
         foundCryptocurrency.setPrice(cryptocurrency.getPrice());
         foundCryptocurrency.setSymbol(cryptocurrency.getSymbol());

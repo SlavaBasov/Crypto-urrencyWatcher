@@ -21,6 +21,10 @@ public class Order {
     public Order() {
     }
 
+    public Order(double savedPrice) {
+        this.savedPrice = savedPrice;
+    }
+
     public Order(double savedPrice, String username) {
         this.savedPrice = savedPrice;
         this.username = username;
