@@ -2,7 +2,9 @@ package com.basovProjects.cryptoCurrencyWatcher.controller;
 
 import com.basovProjects.cryptoCurrencyWatcher.exceptions.ObjectNotFoundException;
 import com.basovProjects.cryptoCurrencyWatcher.model.Cryptocurrency;
+import com.basovProjects.cryptoCurrencyWatcher.model.Order;
 import com.basovProjects.cryptoCurrencyWatcher.service.CryptocurrencyService;
+import com.basovProjects.cryptoCurrencyWatcher.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +14,13 @@ import java.util.List;
 @RestController
 public class CryptocurrencyController {
 
-    CryptocurrencyService<Cryptocurrency, Long> cryptocurrencyService;
+    private final CryptocurrencyService<Cryptocurrency, Long> cryptocurrencyService;
+    private final OrderService orderService;
 
     @Autowired
-    public CryptocurrencyController(CryptocurrencyService<Cryptocurrency, Long> cryptocurrencyService) {
+    public CryptocurrencyController(CryptocurrencyService<Cryptocurrency, Long> cryptocurrencyService, OrderService orderService) {
         this.cryptocurrencyService = cryptocurrencyService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/currencies")
@@ -34,7 +38,12 @@ public class CryptocurrencyController {
     @GetMapping("/currencies/notify")
     public ResponseEntity<?> notifyUser(@RequestParam String username, @RequestParam String symbol) throws ObjectNotFoundException {
         Cryptocurrency cryptocurrencyFound = cryptocurrencyService.findBySymbol(symbol);
-        return ResponseEntity.ok().body(String.format("OK, %s, %d, %s", symbol, cryptocurrencyFound.getId(), username));
+        boolean result = orderService.save(new Order(cryptocurrencyFound.getPrice(),
+                username, cryptocurrencyFound));
+        if(result){
+            return ResponseEntity.ok().body(String.format("Your order is accepted, %s", username));
+        }
+        return ResponseEntity.ok().body(String.format("Your order already exists, %s", username));
     }
 
 }
